@@ -9,6 +9,12 @@ class QueryController:
         self.library_controller = library_controller
         self.author_controller = author_controller
         
+    @staticmethod
+    def get_queried_date(as_of_date):
+        split_date = list(map(int, as_of_date.split('-')))
+        queried_date = date(split_date[0], split_date[1], split_date[2])
+        return queried_date
+        
     def fetch_author_results(self, customer_id, as_of_date):
         cursor = self.database.connection.cursor()
         # Fetch the records from the database for the given customer and where lend date is <= queried date
@@ -20,32 +26,29 @@ class QueryController:
                         f'AND DATE_ADD(lend_date, INTERVAL days_to_return DAY) >= "{as_of_date}";'))
         return cursor.fetchall()
 
-    def get_queried_date(self, as_of_date):
-        split_date = list(map(int, as_of_date.split('-')))
-        queried_date = date(split_date[0], split_date[1], split_date[2])
-        return queried_date
-
-    # Fetch the charges on the basis of customer id and as_of_date when the user returns the books.
+    # Fetch the charges on the basis of customer id and as_of_date when the user returns the books for version 1 API.
     def get_customer_charges_v1(self, customer_id, as_of_date):
         results = self.library_controller.fetch_book_data(customer_id, as_of_date)
         cost = 0
-        queried_date = self.get_queried_date(as_of_date)
+        queried_date = QueryController.get_queried_date(as_of_date)
         for result in results:
             cost += (queried_date - result[2]).days
         return cost
 
+    # Fetch the charges on the basis of customer id and as_of_date when the user returns the books for version 2 API.
     def get_customer_charges_v2(self, customer_id, as_of_date):
         results = self.fetch_author_results(customer_id, as_of_date)
         cost = 0
-        queried_date = self.get_queried_date(as_of_date)
+        queried_date = QueryController.get_queried_date(as_of_date)
         for result in results:
             cost += (queried_date - result[1]).days * self.author_controller.get_type_cost(result[0])
         return cost
 
+    # Fetch the charges on the basis of customer id and as_of_date when the user returns the books for version 3 API.
     def get_customer_charges_v3(self, customer_id, as_of_date):
         results = self.fetch_author_results(customer_id, as_of_date)
         cost = 0
-        queried_date = self.get_queried_date(as_of_date)
+        queried_date = QueryController.get_queried_date(as_of_date)
         for result in results:
             no_of_days = (queried_date - result[1]).days
             cost += self.author_controller.get_type_cost_v3(result[0], no_of_days)

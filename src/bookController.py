@@ -50,6 +50,9 @@ class BookController:
                 author_name = book['author_name']
                 author_type = author_name_to_type[author_name]
                 author_id = unique_id
+                
+                # If author_name is already present, use the same author_id. Otherwise, create a new author_id.
+                # This logic can be changed depending on the whether we want to have multiple author names or not.
                 if author_name_to_id.get(book_name, None) is not None:
                     author_id = author_name_to_id[book_name]
                 else:

@@ -5,3 +5,5 @@
 
 ### To run the test cases:
 - python3 src/test_queryController.py
+
+### author_type.csv contains the author name with the author type (FICTION, NOVEL, etc.)
