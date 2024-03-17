@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from database import MySQLConnection
 from customerController import CustomerController
 from bookController import BookController
@@ -18,7 +19,7 @@ def main():
     # Library controller handles library table data (DDL, DML commands) in the database.
     library_controller = LibraryController(conn)
     
-    data = pd.read_csv('./customer_data.csv', delimiter = ',')
+    data = pd.read_csv(os.getenv('CSV_DATA_PATH'), delimiter = ',')
     customer_controller.populate_db(data)
     book_controller.populate_db(data)
     library_controller.populate_db(data)

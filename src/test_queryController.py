@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import os
 from database import MySQLConnection
 from customerController import CustomerController
 from bookController import BookController
@@ -15,7 +16,7 @@ class TestQueryController(unittest.TestCase):
         self.book_controller = BookController(self.conn)
         self.library_controller = LibraryController(self.conn)
         
-        data = pd.read_csv('./customer_data.csv', delimiter = ',')
+        data = pd.read_csv(os.getenv('CSV_DATA_PATH'), delimiter = ',')
         self.customer_controller.populate_db(data)
         self.book_controller.populate_db(data)
         self.library_controller.populate_db(data)
