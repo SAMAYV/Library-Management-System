@@ -39,6 +39,10 @@ def main():
     book_controller.populate_db_v2(data, library_controller)
     # API query to fetch the customer charges based on the returning date of books.
     print(query_controller.get_customer_charges_v2(498, '2023-02-16'))
+    
+    # Migration to version 3
+    # API query to fetch the customer charges based on the returning date of books.
+    print(query_controller.get_customer_charges_v3(498, '2023-02-16'))
 
 if __name__ == "__main__":
     main()

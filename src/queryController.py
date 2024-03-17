@@ -41,3 +41,12 @@ class QueryController:
         for result in results:
             cost += (queried_date - result[1]).days * self.author_controller.get_type_cost(result[0])
         return cost
+
+    def get_customer_charges_v3(self, customer_id, as_of_date):
+        results = self.fetch_author_results(customer_id, as_of_date)
+        cost = 0
+        queried_date = self.get_queried_date(as_of_date)
+        for result in results:
+            no_of_days = (queried_date - result[1]).days
+            cost += self.author_controller.get_type_cost_v3(result[0], no_of_days)
+        return cost
