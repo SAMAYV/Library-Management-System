@@ -14,6 +14,7 @@ class MySQLConnection:
                     user = os.getenv('USERNAME'),
                     password = os.getenv('PASSWORD'),
                     database = os.getenv('DATABASE'),
+                    buffered = True
                 )
                 print("MySQL Database connection successful")
             except Error as err:
@@ -27,3 +28,12 @@ class MySQLConnection:
         result = cursor.fetchall()
         cursor.close()
         return result
+    
+    def drop_tables(self):
+        cursor = self.connection.cursor()
+        cursor.execute("DROP TABLE IF EXISTS library;")
+        cursor.execute("DROP TABLE IF EXISTS customer;")
+        cursor.execute("DROP TABLE IF EXISTS book;")
+        cursor.execute("DROP TABLE IF EXISTS author;")
+        self.connection.commit()
+        cursor.close()

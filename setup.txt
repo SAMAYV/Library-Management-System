@@ -4,3 +4,4 @@
 >> sudo service mysql start
 >> sudo service mysql status
 >> pip install python-dotenv
+>> pip install pyodbc
