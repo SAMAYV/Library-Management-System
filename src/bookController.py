@@ -7,7 +7,7 @@ class BookController:
     def __init__(self, database):
         self.database = database
 
-    # Populate the table "book" with the csv data.
+    # Populate the table "book" with the csv data for version 1 API.
     def populate_db(self, data):
         cursor = self.database.connection.cursor()
         cursor.execute(CREATE_BOOK_TABLE)

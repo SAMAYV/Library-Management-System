@@ -20,7 +20,6 @@ class LibraryController:
                            f' VALUES ({customer_id}, "{book_id}", "{lend_date}", {days_to_return})')
                 cursor.execute(command)
         self.database.connection.commit()
-        cursor.execute('SELECT * FROM library;')
         
     # Fetches the book data from the database for the given customer and the date on which the user returns the issued books.
     def fetch_book_data(self, customer_id, as_of_date):
